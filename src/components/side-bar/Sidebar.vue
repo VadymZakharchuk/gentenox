@@ -29,7 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { DialogItem, Profile, Message} from "@/types/app.types"
 
 const props = defineProps<{

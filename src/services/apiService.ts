@@ -1,8 +1,6 @@
 import api from './axios'
 import { DialogsResponse, MessagesResponse, Profile } from "@/types/app.types";
 
-const API_BASE_URL = '/api'; // Або ваша базова URL-адреса API
-
 // Отримання профілю користувача за ID
 export const getProfile = async (id: string): Promise<Profile> => {
   try {

@@ -11,8 +11,8 @@
           @click="$emit('select-dialog', dialog.id)"
           class="side-bar__dialogs-item">
         <div class="flex justify-between">
-          <span>{{ getParticipantNames(participants) }}</span>
-          <span>{{ new Date(dialog.updatedAt).toLocaleString('en-Uk') }}</span>
+          <span class="text-md font-medium text-blue-800">{{ getParticipantNames(participants) }}</span>
+          <span class="text-sm text-gray-400">{{ new Date(dialog.updatedAt).toLocaleString('en-Uk') }}</span>
         </div>
         <div v-if="dialog.lastMessage" class="text-sm text-gray-500">
           {{ formatLastMessage(dialog.lastMessage) }}

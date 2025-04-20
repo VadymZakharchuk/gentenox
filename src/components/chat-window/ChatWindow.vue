@@ -7,8 +7,18 @@
            :class="{
              'bg-blue-500 text-white self-end': message.payload.senderId === userProfile?.id,
              'bg-gray-200 text-gray-800 self-start': message.payload.senderId !== userProfile?.id}">
-        <span class="font-semibold mr-2">{{ getSenderName(message.payload.senderId) }}:</span>
-        <span v-if="message.payload.type === 'text'">{{ message.payload.content }}</span>
+        <div class="flex justify-start items-center mb-2">
+          <img  v-if="senderAvatar(message.payload.senderId)"
+                :src="senderAvatar(message.payload.senderId)"
+                alt="avatar"
+          class="w-10 h-10 rounded-full mr-2"/>
+          <span class="font-semibold mr-2">{{ senderName(message.payload.senderId) }}:</span>
+        </div>
+
+        <span v-if="message.payload.type === 'text'"
+              class="max-w-[50%] break-words">
+          {{ message.payload.content }}
+        </span>
         <img v-else-if="message.payload.type === 'image'"
              :src="message.payload.imageUrl"
              alt="Image"
@@ -18,6 +28,13 @@
                controls
                class="max-w-full h-auto">
         </video>
+        <div class= "text-[12px] text-right mt-2"
+             :class="{
+              'text-gray-300': message.payload.senderId === userProfile?.id,
+              'text-gray-600': message.payload.senderId !== userProfile?.id
+              }">
+          {{new Date(message.payload.createdAt).toLocaleString('en-Uk') }}
+        </div>
       </div>
       <div v-if="hasMoreMessages" class="chat-hasMore">
         <button @click="$emit('load-more-messages')"
@@ -27,7 +44,7 @@
       </div>
     </div>
     <div class="chat-inputArea">
-      <div class="flex">
+      <div class="flex justify-center">
         <input
           type="text"
           v-model="newMessageText"
@@ -36,10 +53,10 @@
           class="chat-inputArea__input"
         />
         <button
-          @click="handleSendMessage"
+          @click="handleSendMessage()"
           class="chat-inputArea__btn"
         >
-          Надіслати
+          Send
         </button>
       </div>
     </div>
@@ -47,11 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Profile, Message} from "@/types/app.types"
 
 const props = defineProps<{
   messages: Message[];
+  participants: Profile[];
   totalMessages: number;
   hasMoreMessages: boolean;
   currentDialogId: string | null;
@@ -59,23 +77,29 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['load-more-messages', 'send-message']);
-
 const newMessageText = ref('');
-
+const receiverId = computed(() => props.participants[0].id)
 const handleSendMessage = () => {
   if (newMessageText.value.trim()) {
-    emit('send-message', newMessageText.value.trim());
+    emit('send-message', newMessageText.value.trim(), receiverId.value);
     newMessageText.value = '';
   }
+}
+const senderName = (senderId: string) => {
+  const res = props.participants.filter(item => item.id === senderId);
+  if (res.length > 0) {
+    return res[0].name;
+  }
+  return props.userProfile ? props.userProfile.name : 'anonymous';
+};
+const senderAvatar = (senderId: string) => {
+  const res = props.participants.filter(item => item.id === senderId);
+  if (res.length > 0) {
+    return res[0].avatar;
+  }
+  return props.userProfile ? props.userProfile.avatar : undefined;
 };
 
-const getSenderName = (senderId: string) => {
-  // У реальному застосунку тут потрібно буде підтягувати ім'я користувача за ID
-  if (props.userProfile?.id === senderId) {
-    return props.userProfile.name;
-  }
-  return `Користувач ${senderId.substring(0, 8)}...`;
-};
 </script>
 
 <style scoped lang="scss">
@@ -98,11 +122,12 @@ const getSenderName = (senderId: string) => {
     @apply p-4 border-t border-gray-200;
 
     &__input {
-      @apply bg-blue-500 text-white rounded-r-md px-4 py-2 font-semibold hover:bg-blue-600;
-      @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
+      @apply bg-blue-200 text-black rounded-r-md px-4 py-2 font-medium hover:bg-blue-400;
+      @apply w-4/5 focus:outline-none focus:ring-2 focus:ring-blue-500;
     }
     &__btn {
-      @apply ml-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded;
+      @apply ml-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold;
+      @apply w-1/5 py-2 px-4 rounded;
     }
   }
 }

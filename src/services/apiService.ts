@@ -6,9 +6,7 @@ const API_BASE_URL = '/api'; // Або ваша базова URL-адреса AP
 // Отримання профілю користувача за ID
 export const getProfile = async (id: string): Promise<Profile> => {
   try {
-    console.log('id', id)
     const response = await api.get(`/profiles/${id}`);
-    console.log(response.data)
     return response.data;
   } catch (error: any) {
     console.error('Помилка отримання профілю:', error.message);

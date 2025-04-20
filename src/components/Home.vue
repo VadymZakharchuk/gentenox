@@ -12,6 +12,7 @@
                @load-more-dialogs="loadMoreDialogs"
                :user-profile="userProfile" />
       <ChatWindow :messages="messagesData.items"
+                  :participants="userParticipants"
                   :total-messages="messagesData.total"
                   :has-more-messages="messagesData.hasMore"
                   @load-more-messages="loadMoreMessages"
@@ -102,12 +103,12 @@ const loadMoreMessages = async (offset = messagesData.value.offset, limit = 10) 
   }
 };
 
-const sendMessage = (text: string) => {
+const sendMessage = (text: string, receiverId: string) => {
   if (socket.value && socket.value.readyState === WebSocket.OPEN && currentDialogId.value) {
     const messagePayload: Message = {
       type: 'NEW_MESSAGE',
       payload: {
-        id: Math.random().toString(36).substring(2, 15), // Генеруємо тимчасовий ID клієнта
+        id: receiverId,
         dialogId: currentDialogId.value,
         senderId: userId.value,
         createdAt: Date.now(),
@@ -115,9 +116,7 @@ const sendMessage = (text: string) => {
         content: text,
       },
     };
-    console.log('sending message',  messagePayload.payload)
     socket.value.send(JSON.stringify(messagePayload));
-    // Оптимістичне оновлення UI
     messagesData.value.items.push(messagePayload);
   }
 };

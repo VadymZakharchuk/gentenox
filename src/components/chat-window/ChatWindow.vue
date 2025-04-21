@@ -33,7 +33,7 @@
               'text-gray-300': message.payload.senderId === userProfile?.id,
               'text-gray-600': message.payload.senderId !== userProfile?.id
               }">
-          {{new Date(message.payload.createdAt).toLocaleString('en-Uk') }}
+          {{ formatDate(message.payload.createdAt) }}
         </div>
       </div>
       <div v-if="hasMoreMessages" class="chat-hasMore">
@@ -80,6 +80,7 @@
 import { computed, ref } from 'vue';
 import {Profile, Message, MessagePayload} from "@/types/app.types"
 import { useUserStore } from "@/store/user";
+import { formatDate } from "@/utils/formatDate";
 
 const props = defineProps<{
   messages: Message[];

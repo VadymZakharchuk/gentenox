@@ -11,9 +11,9 @@
           @click="handleDialogActive(dialog.id)"
           :class="{ 'bg-blue-200': activeDialog === dialog.id}"
           class="side-bar__dialogs-item">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center">
           <span class="text-md font-medium text-blue-800">{{ getParticipantNames(participants) }}</span>
-          <span class="text-sm text-gray-400">{{ new Date(dialog.updatedAt).toLocaleString('en-Uk') }}</span>
+          <span class="text-[12px] text-gray-400">{{ formatDate(dialog.updatedAt) }}</span>
         </div>
         <div v-if="dialog.lastMessage" class="text-sm text-gray-500">
           {{ formatLastMessage(dialog.lastMessage) }}
@@ -33,6 +33,7 @@
 import { DialogItem, Profile, Message} from "@/types/app.types"
 import { computed} from "vue";
 import { useUserStore } from "@/store/user";
+import { formatDate } from "@/utils/formatDate";
 
 const props = defineProps<{
   dialogs: DialogItem[];
@@ -76,7 +77,7 @@ const formatLastMessage = (lastMessage: Message) => {
 
 <style scoped lang="scss">
 .side-bar {
-  @apply w-64 border-r border-gray-200 bg-gray-50 p-4 flex flex-col;
+  @apply w-1/5 border-r border-gray-200 bg-gray-50 p-4 flex flex-col;
 
   &__user {
     @apply mb-4 flex items-center;

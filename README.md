@@ -1,29 +1,52 @@
-# Gentenox
+# Gentenox - Vue 3 Chat Application
 
-This template should help get you started developing with Vue 3 in Vite.
+## Project Overview
 
-## Recommended IDE Setup
+Gentenox – це клієнтський додаток для чату, розроблений з використанням Vue 3, TypeScript та Tailwind CSS. Він забезпечує обмін текстовими повідомленнями, зображеннями та відео в режимі реального часу через WebSocket.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Setup Instructions
 
-## Customize configuration
+1. **Prerequisites:** Node.js та npm повинні бути встановлені.
+2. **Clone the repository:** `git clone https://github.com/VadymZakharchuk/gentenox.git`
+3. **Install dependencies:** `npm install`
+4. **Set environment variables:** Створіть файл `.env` в кореневому каталозі проекту та встановіть змінну `VITE_CHAT_URL` на URL вашого WebSocket сервера (приклад у файлі `.env`).
+5. **Clone the repository:** `git clone https://github.com/VadymZakharchuk/chat-server.git`
+6. **Install dependencies:** `npm install`
+7. **Run the development server:** `npm run dev`
+8. **Build for production:** `npm run build`
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Architecture Overview
 
-## Project Setup
+Проект використовує наступні технології:
 
-```sh
-npm install
-```
+* **Vue 3:** Фреймворк JavaScript для побудови інтерфейсу користувача.
+* **TypeScript:** Мова програмування, що додає статичну типізацію до JavaScript.
+* **Tailwind CSS:** Утилітарний фреймворк CSS для швидкої стилізації.
+* **Vite:** Інструмент збірки для швидкої розробки.
+* **Pinia:** Бібліотека для управління станом додатку.
+* **Vue Router:** Бібліотека для маршрутизації в додатку.
+* **WebSocket:** Протокол для двостороннього зв'язку в реальному часі.
+* **Axios:** Бібліотека HTTP-клієнта для виконання API-запитів.
 
-### Compile and Hot-Reload for Development
+## Components Structure
 
-```sh
-npm run dev
-```
+* **App.vue:** Кореневий компонент додатку.
+* **Home.vue:** Основний компонент, що містить Sidebar та ChatWindow.
+* **Sidebar.vue:** Бічна панель зі списком діалогів.
+* **ChatWindow.vue:** Вікно чату для відображення повідомлень та надсилання нових.
+* **DefaultLayout.vue:** Компонент макета за замовчуванням.
 
-### Compile and Minify for Production
+## API Service
 
-```sh
-npm run build
-```
+API-запити обробляються за допомогою `apiService.ts`, який надає наступні функції:
+
+* `getProfile(id: string)`: Отримує профіль користувача за ID.
+* `getDialogs(offset: number, limit: number, participantId: string | null)`: Отримує список діалогів.
+* `getMessages(dialogId: string, offset: number, limit: number)`: Отримує повідомлення для вказаного діалогу.
+
+## Assumptions Made
+
+* **Backend API:** Передбачається наявність backend API, що відповідає на запити, визначені в `apiService.ts`.
+* **WebSocket Server:** Передбачається наявність WebSocket сервера за адресою, вказаною в `.env` файлі.
+* **Authentication:**  В даний момент автентифікація не реалізована. Передбачається, що ідентифікатор користувача (`userId`) жорстко закодований.
+* **Data Persistence:**  Повідомлення та діалоги не зберігаються локально, тому вони будуть втрачені після перезавантаження сторінки.

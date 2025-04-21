@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <div class="home-page__header">
-      <h1 class="">My chat</h1>
+      <h1 class="text-xl text-blue-900 font-bold">Vue 3 chat client application</h1>
     </div>
     <div class="home-page__body">
       <Sidebar @select-dialog="loadMessages"
@@ -28,7 +28,7 @@ import {onMounted, ref} from 'vue';
 import {getDialogs, getMessages, getProfile} from '@/services/apiService';
 import Sidebar from '@/components/side-bar/Sidebar.vue';
 import ChatWindow from '@/components/chat-window/ChatWindow.vue';
-import {DialogsResponse, Message, MessagesResponse, Profile} from "@/types/app.types";
+import {DialogsResponse, Message, MessagePayload, MessagesResponse, Profile} from "@/types/app.types";
 import { useUserStore } from "@/store/user";
 
 // Типи даних на основі API
@@ -103,23 +103,17 @@ const loadMoreMessages = async (offset = messagesData.value.offset, limit = 10) 
   }
 };
 
-const sendMessage = (text: string, receiverId: string) => {
-  if (socket.value && socket.value.readyState === WebSocket.OPEN && currentDialogId.value) {
-    const messagePayload: Message = {
-      type: 'NEW_MESSAGE',
-      payload: {
-        id: receiverId,
-        dialogId: currentDialogId.value,
-        senderId: userId.value,
-        createdAt: Date.now(),
-        type: 'text',
-        content: text,
-      },
-    };
-    socket.value.send(JSON.stringify(messagePayload));
-    messagesData.value.items.push(messagePayload);
+const sendMessage = (messagePayload: MessagePayload) => {
+    if (socket.value && socket.value.readyState === WebSocket.OPEN && currentDialogId.value) {
+      const message: Message = {
+        type: 'NEW_MESSAGE',
+        payload: messagePayload
+      };
+      socket.value.send(JSON.stringify(message));
+      messagesData.value.items.push(message);
+    }
   }
-};
+;
 
 const socket = ref<WebSocket | null>(null);
 const serverUrl = import.meta.env.VITE_CHAT_URL

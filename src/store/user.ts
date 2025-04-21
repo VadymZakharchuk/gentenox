@@ -1,19 +1,23 @@
 import { defineStore } from 'pinia'
 import { Profile } from "@/types/app.types";
 
-interface UserState {
-  user: Profile;
+type UserState = {
+  user: Profile
 }
 
 export const useUserStore = defineStore('userStore', {
-  state: () => ({
-    user: {} as Profile
+  state: (): UserState => ({
+    user: {
+      id: '',
+      name: '',
+      avatar: ''
+    }
   }),
 
   getters: {
-    userData: (state: UserState): Profile => {
+    userData: (state): Profile => {
       return state.user;
     }
   },
-
 })
+

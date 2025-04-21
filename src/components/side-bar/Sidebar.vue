@@ -8,7 +8,8 @@
     <ul class="side-bar__dialogs-list">
       <li v-for="dialog in dialogs"
           :key="dialog.id"
-          @click="$emit('select-dialog', dialog.id)"
+          @click="handleDialogActive(dialog.id)"
+          :class="{ 'bg-blue-200': activeDialog === dialog.id}"
           class="side-bar__dialogs-item">
         <div class="flex justify-between">
           <span class="text-md font-medium text-blue-800">{{ getParticipantNames(participants) }}</span>
@@ -30,6 +31,7 @@
 
 <script setup lang="ts">
 import { DialogItem, Profile, Message} from "@/types/app.types"
+import {ref} from "vue";
 
 const props = defineProps<{
   dialogs: DialogItem[];
@@ -39,13 +41,19 @@ const props = defineProps<{
   userProfile: Profile | null;
 }>();
 const emit = defineEmits(['select-dialog', 'load-more-dialogs']);
-const userId = localStorage.getItem('userId');
+const activeDialog = ref('')
 
+const handleDialogActive = (dialogId: string) => {
+  emit("select-dialog", dialogId);
+  activeDialog.value = dialogId;
+}
 const getParticipantNames = (list: Profile[]) => {
   if (!props.userProfile) return 'Loading...';
 
-  const res: Profile[] = list.filter(item => item.id !== props.userProfile!.id)
-  return res.map(r => r!.name).join(', ')
+  return list
+    .filter(item => item.id !== props.userProfile?.id)
+    .map(participant => participant.name)
+    .join(', ');
 }
 
 const formatLastMessage = (lastMessage: Message) => {

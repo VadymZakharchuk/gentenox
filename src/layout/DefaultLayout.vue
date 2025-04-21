@@ -14,7 +14,7 @@
 
 <style scoped lang="scss">
 .shop-main {
-  @apply w-full h-full;
+  @apply w-full h-full mx-auto;
   &__page {
     @apply w-full h-full;
     @apply bg-blue-100;

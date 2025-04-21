@@ -15,6 +15,8 @@ export interface MessagePayload {
   videoUrl?: string;
   thumbnailUrl?: string;
   duration?: number;
+  fileUrl? : string;
+  fileName?: string;
 }
 
 export interface Message {

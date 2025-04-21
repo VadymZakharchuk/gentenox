@@ -31,7 +31,8 @@
 
 <script setup lang="ts">
 import { DialogItem, Profile, Message} from "@/types/app.types"
-import {ref} from "vue";
+import { computed} from "vue";
+import { useUserStore } from "@/store/user";
 
 const props = defineProps<{
   dialogs: DialogItem[];
@@ -41,11 +42,13 @@ const props = defineProps<{
   userProfile: Profile | null;
 }>();
 const emit = defineEmits(['select-dialog', 'load-more-dialogs']);
-const activeDialog = ref('')
+const userState = useUserStore()
+
+const activeDialog = computed(() => { return userState.activeDialog })
 
 const handleDialogActive = (dialogId: string) => {
   emit("select-dialog", dialogId);
-  activeDialog.value = dialogId;
+  userState.activeDialog = dialogId;
 }
 const getParticipantNames = (list: Profile[]) => {
   if (!props.userProfile) return 'Loading...';

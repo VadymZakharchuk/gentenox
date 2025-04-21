@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { Profile } from "@/types/app.types";
 
 type UserState = {
-  user: Profile
+  user: Profile,
+  activeDialog: string
 }
 
 export const useUserStore = defineStore('userStore', {
@@ -11,13 +12,15 @@ export const useUserStore = defineStore('userStore', {
       id: '',
       name: '',
       avatar: ''
-    }
+    },
+    activeDialog: ''
   }),
 
   getters: {
     userData: (state): Profile => {
       return state.user;
-    }
+    },
+    actDialog: state => { return state.activeDialog}
   },
 })
 

@@ -60,7 +60,6 @@ const loadDialogs = async (offset = 0, limit = 10, participantId: string | null 
     for (const item of dialogsData.value.items) {
 
       for (const uId of item.participantIds) {
-        if (uId === userId.value) continue
         if( userParticipants.value && userParticipants.value.some(up => up.id === uId)) continue
         const res = await getProfile(uId);
         if (res) {

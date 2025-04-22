@@ -44,3 +44,26 @@ export const getMessages = async (
     throw error;
   }
 };
+
+export const uploadFile = async (file: File): Promise<string | null> => {
+  const formData = new FormData();
+  formData.append('image', file); // Припустимо, що ваш серверний ендпоінт очікує поле 'image'
+
+  try {
+    const response = await fetch('/api/upload/image', { // тут повинен бути фактичний ендпоінт завантаження зображень
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.imageUrl; // Припустимо, що сервер повинен повертати URL у полі imageUrl
+    } else {
+      console.error('Помилка завантаження файлу:', response.status);
+      return null;
+    }
+  } catch (error) {
+    console.error('Помилка завантаження файлу:', error);
+    return null;
+  }
+};

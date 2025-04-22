@@ -15,7 +15,7 @@
           <span class="text-md font-medium text-blue-800">{{ getParticipantNames(participants) }}</span>
           <span class="text-[12px] text-gray-400">{{ formatDate(dialog.updatedAt) }}</span>
         </div>
-        <div v-if="dialog.lastMessage" class="text-sm text-gray-500">
+        <div v-if="dialog.lastMessage" class="text-sm text-gray-500 line-clamp-3">
           {{ formatLastMessage(dialog.lastMessage) }}
         </div>
       </li>

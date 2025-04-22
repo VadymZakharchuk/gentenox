@@ -133,8 +133,7 @@ const connectWebSocket = () => {
       if (data.type === 'NEW_MESSAGE' && data.payload.dialogId === currentDialogId.value) {
         messagesData.value.items.push(data);
       } else if (data.type === 'NEW_DIALOG') {
-        // Обробка нового діалогу (може знадобитися оновлення списку діалогів)
-        loadDialogs(); // Або більш ефективне оновлення
+        loadDialogs();
       }
     } catch (error) {
       console.error('websocket message handling WebSocket:', error);

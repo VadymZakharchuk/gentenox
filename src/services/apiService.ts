@@ -45,9 +45,10 @@ export const getMessages = async (
   }
 };
 
+// Завантаження файлів на сервер
 export const uploadFile = async (file: File): Promise<string | null> => {
   const formData = new FormData();
-  formData.append('image', file); // Припустимо, що ваш серверний ендпоінт очікує поле 'image'
+  formData.append('image', file); // Припустимо, що серверний ендпоінт очікує поле 'image'
 
   try {
     const response = await fetch('/api/upload/image', { // тут повинен бути фактичний ендпоінт завантаження зображень

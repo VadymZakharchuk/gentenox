@@ -35,7 +35,7 @@
 import {computed, ref} from 'vue';
 import { MessagePayload } from "@/types/app.types";
 import { useUserStore } from "@/store/user";
-import { uploadFile } from "@/services/apiService";
+// import { uploadFile } from "@/services/apiService";
 
 const props = defineProps<{
   currentDialogId: string | null;

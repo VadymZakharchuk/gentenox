@@ -6,7 +6,7 @@
                  :participants="participants"
                  :userProfileId="userProfileId" />
     <div v-if="hasMoreMessages" class="chat-hasMore">
-      <button @click="$emit('load-more-messages')"
+      <button @click="emit('load-more-messages')"
               class="chat-hasMore__btn">
         Load more messages
       </button>
@@ -18,7 +18,7 @@
 import ChatMessage from '@/components/chat-message/ChatMessage.vue';
 import { Profile, Message } from "@/types/app.types";
 
-const props = defineProps<{
+defineProps<{
   messages: Message[];
   participants: Profile[];
   hasMoreMessages: boolean;
